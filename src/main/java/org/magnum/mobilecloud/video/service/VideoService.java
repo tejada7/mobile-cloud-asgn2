@@ -4,10 +4,11 @@ import org.eclipse.jetty.http.HttpException;
 import org.magnum.mobilecloud.video.repository.Video;
 import org.magnum.mobilecloud.video.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.Collections;
 
 @Component
 public class VideoService {
@@ -59,5 +60,14 @@ public class VideoService {
         videoRepository.save(video);
 
         return video;
+    }
+
+    public Collection<Video> getVideoByName(String videoName) {
+        final Collection<Video> videosByName = videoRepository.findByName(videoName);
+        if (null == videosByName) {
+            return Collections.emptyList();
+        }
+
+        return videosByName;
     }
 }

@@ -82,4 +82,15 @@ public class VideoController {
 		return new ResponseEntity(HttpStatus.OK);
 	}
 
+	/**
+	 * GET /video/search/findByName?title={title}
+	 * - Returns a list of videos whose titles match the given parameter or an empty
+	 * list if none are found.
+	 * /search/findByName
+	 */
+	@RequestMapping(value = "/video/search/findByName", method = RequestMethod.GET)
+	public @ResponseBody Collection<Video> getVideosByName(@RequestParam("title") String title) {
+		return videoService.getVideoByName(title);
+	}
+
 }

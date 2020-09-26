@@ -19,7 +19,6 @@
 package org.magnum.mobilecloud.video;
 
 import org.eclipse.jetty.http.HttpException;
-import org.eclipse.jetty.server.Response;
 import org.magnum.mobilecloud.video.repository.Video;
 import org.magnum.mobilecloud.video.service.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,7 +89,17 @@ public class VideoController {
 	 */
 	@RequestMapping(value = "/video/search/findByName", method = RequestMethod.GET)
 	public @ResponseBody Collection<Video> getVideosByName(@RequestParam("title") String title) {
-		return videoService.getVideoByName(title);
+		return videoService.getVideosByName(title);
+	}
+
+	/**
+	 * GET /video/search/findByDurationLessThan?duration={duration}
+	 *    - Returns a list of videos whose durations are less than the given parameter or
+	 *      an empty list if none are found.
+	 */
+	@RequestMapping(value = "/video/search/findByDurationLessThan", method = RequestMethod.GET)
+	public @ResponseBody Collection<Video> getVideosLessThan(@RequestParam("duration") long duration) {
+		return videoService.getVideosLessThan(duration);
 	}
 
 }

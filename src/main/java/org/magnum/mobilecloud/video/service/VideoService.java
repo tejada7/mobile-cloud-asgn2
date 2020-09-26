@@ -4,7 +4,6 @@ import org.eclipse.jetty.http.HttpException;
 import org.magnum.mobilecloud.video.repository.Video;
 import org.magnum.mobilecloud.video.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -62,12 +61,21 @@ public class VideoService {
         return video;
     }
 
-    public Collection<Video> getVideoByName(String videoName) {
+    public Collection<Video> getVideosByName(String videoName) {
         final Collection<Video> videosByName = videoRepository.findByName(videoName);
         if (null == videosByName) {
             return Collections.emptyList();
         }
 
         return videosByName;
+    }
+
+    public Collection<Video> getVideosLessThan(long duration) {
+        final Collection<Video> videosLessThanDuration = videoRepository.findByDurationLessThan(duration);
+        if (null == videosLessThanDuration) {
+            return Collections.emptyList();
+        }
+
+        return videosLessThanDuration;
     }
 }

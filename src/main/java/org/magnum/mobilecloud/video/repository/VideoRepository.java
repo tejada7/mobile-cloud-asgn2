@@ -9,4 +9,6 @@ import java.util.Collection;
 public interface VideoRepository extends CrudRepository<Video, Long> {
 
     Collection<Video> findByName(String name);
+
+    Collection<Video> findByDurationLessThan(long duration);
 }

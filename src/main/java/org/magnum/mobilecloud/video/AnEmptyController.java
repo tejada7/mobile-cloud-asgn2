@@ -18,34 +18,38 @@
 
 package org.magnum.mobilecloud.video;
 
+import org.magnum.mobilecloud.video.repository.Video;
+import org.magnum.mobilecloud.video.service.VideoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Collection;
+
 @Controller
 public class AnEmptyController {
-	
-	/**
-	 * You will need to create one or more Spring controllers to fulfill the
-	 * requirements of the assignment. If you use this file, please rename it
-	 * to something other than "AnEmptyController"
-	 * 
-	 * 
-		 ________  ________  ________  ________          ___       ___  ___  ________  ___  __       
-		|\   ____\|\   __  \|\   __  \|\   ___ \        |\  \     |\  \|\  \|\   ____\|\  \|\  \     
-		\ \  \___|\ \  \|\  \ \  \|\  \ \  \_|\ \       \ \  \    \ \  \\\  \ \  \___|\ \  \/  /|_   
-		 \ \  \  __\ \  \\\  \ \  \\\  \ \  \ \\ \       \ \  \    \ \  \\\  \ \  \    \ \   ___  \  
-		  \ \  \|\  \ \  \\\  \ \  \\\  \ \  \_\\ \       \ \  \____\ \  \\\  \ \  \____\ \  \\ \  \ 
-		   \ \_______\ \_______\ \_______\ \_______\       \ \_______\ \_______\ \_______\ \__\\ \__\
-		    \|_______|\|_______|\|_______|\|_______|        \|_______|\|_______|\|_______|\|__| \|__|
-                                                                                                                                                                                                                                                                        
-	 * 
-	 */
-	
-	@RequestMapping(value="/go",method=RequestMethod.GET)
-	public @ResponseBody String goodLuck(){
+
+	@Autowired
+	private VideoService videoService;
+
+	@RequestMapping(value = "/video", method = RequestMethod.POST)
+	public @ResponseBody
+	Video addVideoMetadata(@RequestBody Video video) {
+		return videoService.registerVideo(video);
+	}
+
+	@RequestMapping(value = "/go", method = RequestMethod.GET)
+	public @ResponseBody String goodLuck() {
 		return "Good Luck!";
 	}
-	
+
+	@RequestMapping(value = "/video", method = RequestMethod.GET)
+	public @ResponseBody
+	Collection<Video> getAllVideos() {
+		return videoService.getAllVideos();
+	}
+
 }

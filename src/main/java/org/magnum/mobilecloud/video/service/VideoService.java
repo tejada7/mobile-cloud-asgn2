@@ -1,8 +1,10 @@
 package org.magnum.mobilecloud.video.service;
 
+import org.eclipse.jetty.http.HttpException;
 import org.magnum.mobilecloud.video.repository.Video;
 import org.magnum.mobilecloud.video.repository.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -19,5 +21,43 @@ public class VideoService {
 
     public Collection<Video> getAllVideos() {
         return (Collection<Video>) videoRepository.findAll();
+    }
+
+    public Video getVideo(long id) {
+        return videoRepository.findOne(id);
+    }
+
+    public Video likeVideo(long id, String username) throws HttpException {
+        final Video video = videoRepository.findOne(id);
+
+        if (null == video) {
+            throw new HttpException(404, "Video not found");
+        }
+        if (video.getLikedBy().contains(username)) {
+            throw new HttpException(400, "You have already liked the video.");
+        }
+
+        video.setLikes(video.getLikes() + 1);
+        video.getLikedBy().add(username);
+        videoRepository.save(video);
+
+        return video;
+    }
+
+    public Video unlikeVideo(long id, String username) throws HttpException {
+        final Video video = videoRepository.findOne(id);
+
+        if (null == video) {
+            throw new HttpException(404, "Video not found");
+        }
+        if (!video.getLikedBy().contains(username)) {
+            throw new HttpException(400, "You gotta first like the video.");
+        }
+
+        video.setLikes(video.getLikes() - 1);
+        video.getLikedBy().remove(username);
+        videoRepository.save(video);
+
+        return video;
     }
 }
